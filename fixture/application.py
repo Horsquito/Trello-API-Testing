@@ -96,7 +96,7 @@ class Application:
         return response.status_code
 
     def edit_nonexistent_board(self, board, board_id, logger=logger):
-        logger.info('Edit board')
+        logger.info('Edit nonexistent board')
         url = URL + '1/boards/' + str(board_id) + '?' + KEY + '&' + TOKEN
         querystring = {"name": board.name}
         response = requests.put(url, params=querystring)
