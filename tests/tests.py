@@ -12,15 +12,15 @@ def app(request):
 
 
 def test_create_valid_name_board(app):
-    assert app.create_board(Board(name='Valid name board')) == 200
+    assert app.create_board(Board(name='Valid name board')) == (200, 'Valid name board')
 
 
 def test_create_whitespase_name_board(app):
-    assert app.create_board(Board(name='    ')) == 200
+    assert app.create_board(Board(name='    ')) == (200, '    ')
 
 
 def test_create_existing_name_board(app):
-    assert app.create_board(Board(name='Valid name board')) == 200
+    assert app.create_board(Board(name='Valid name board')) == (200, 'Valid name board')
 
 
 def test_create_empty_board(app):
@@ -28,8 +28,7 @@ def test_create_empty_board(app):
 
 
 def test_edit_board(app):
-    board_id = app.get_board_id()
-    assert app.edit_board(Board(name='New board name'), board_id) == 200
+    assert app.edit_board(Board(name='New board name'), app.id) == (200, 'New board name')
 
 
 def test_edit_nonexistent_board(app):
@@ -37,20 +36,18 @@ def test_edit_nonexistent_board(app):
 
 
 def test_get_board(app):
-    board_id = app.get_board_id()
-    assert app.get_board(board_id) == 200
+    assert app.get_board(app.id) == (200, 'New board name')
 
 
 def test_get_cards(app):
-    board_id = app.get_board_id()
-    list_id = app.get_list_id(board_id)
+    list_id = app.get_list_id(app.id)
     app.create_card(Card(name='New card'), list_id)
-    assert app.get_cards(board_id) == 200
+    assert app.get_cards(app.id) == (200, 'New card')
 
 
 def test_delete_board(app):
-    board_id = app.get_board_id()
-    assert app.delete_board(board_id) == 200
+    assert app.delete_board(app.id) == 200
+    assert app.get_board(app.id) == None
 
 
 def test_delete_nonexistent_board(app):
